@@ -1,24 +1,45 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import TodoList from './TodoList';
 
 function App() {
+
+  const [task,settask]=useState();
+
+  const [todos,settodos]=useState([]);
+
+  const onchangehandler =(e)=>{
+    settask(e.target.value)
+  }
+  const onsubmithandler =(e)=>{
+    e.preventDefault();
+    const newTodos=[...todos,task];
+    settodos(newTodos);
+    settask("");
+    console.log(todos);
+  }
+
+  const deleteHandler = (indexValue) => {
+    const newTodos = todos.filter((todo, index) => index !== indexValue);
+    settodos(newTodos);
+  }
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div >
+      <center>
+      <div className="card">
+        <div className="card-body">
+        <h5 class="card-title">Task Management System</h5>
+          <form onSubmit={onsubmithandler}>
+            <input type='text' name='task' value={task}  onChange={onchangehandler}/> &nbsp; &nbsp; 
+            <input type='submit' value='Add Task' />
+          </form>
+          <TodoList todolist={todos} deleteHandler={deleteHandler}/>
+        </div>
+      </div> 
+      </center>
+     </div>
   );
 }
 
